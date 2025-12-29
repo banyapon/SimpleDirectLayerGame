@@ -1,0 +1,47 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "setup-build",
+            "type": "shell",
+            "command": "cmd",
+            "args": [
+                "/C",
+                "if not exist build mkdir build && copy \"${workspaceFolder}\\libraries\\SDL3\\lib\\SDL3.dll\" \"${workspaceFolder}\\build\\SDL3.dll\" /Y"
+            ],
+            "group": "build",
+            "detail": "สร้างโฟลเดอร์ build และ Copy ไฟล์ DLL ไปวาง"
+        },
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                "-g",
+                "${workspaceFolder}/src/*.c",
+                /*หรือ
+                "${workspaceFolder}/src/main.c",
+                "${workspaceFolder}/src/player.c",
+                */
+                "-o",
+                "${workspaceFolder}/build/main.exe",
+                "-I",
+                "${workspaceFolder}/libraries/SDL3/include",
+                "-L",
+                "${workspaceFolder}/libraries/SDL3/lib/x64",
+                "-lSDL3",
+                "-mwindows"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": "$gcc",
+            "dependsOn": "setup-build"
+        }
+    ]
+}
